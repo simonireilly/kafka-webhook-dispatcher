@@ -9,7 +9,21 @@ This is an app for connecting to kafka and sending webhooks.
     - [Methodology](#Methodology)
       - [Unit Tests](#Unit-Tests)
       - [Integration Tests](#Integration-Tests)
+      
+# Archictecture
 
+## Webhooks Recieved
+
+- single delivering topic enter the persist-and-validate consumer:
+    - This consumer persists all webhooks and validates them afterward.
+    - Then if it is invalid it will not send it on to the next consumer.
+    - Valid uuids are passed onto the next topic
+
+## Webhooks Dispatcher
+
+- single delivering topic from the webhooks recieved consumer will be dispatched here:
+    - This consumer will poll the URL provided for the webhooks and send the webhooks on to the next stage
+    
 
 # Developer
 
