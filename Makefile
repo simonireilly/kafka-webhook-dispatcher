@@ -9,12 +9,12 @@ COMPOSE=-f dev.yml -f dispatcher.yml
 build: ## Build all required services
 	docker-compose ${COMPOSE} build
 
-up:
+up: ## Start the application
 	docker-compose ${COMPOSE} up --d
 
-stop:
+stop: ## Stop the application
 	docker-compose ${COMPOSE} stop
 
-tail:
+tail: ## Tail the application logs
 	docker-compose ${COMPOSE} logs --tail="100" -f
 
