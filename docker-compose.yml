@@ -1,0 +1,48 @@
+
+version: '3.5'
+
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webhook_dispatcher
+
+  postgres:
+    image: postgres:11.2-alpine
+    ports:
+      - 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      shared_net:
+      default:
+
+  kafka:
+    image: landoop/kafka-lenses-dev
+    environment:
+      SAMPLEDATA: '0'
+      RUNNING_SAMPLEDATA: '0'
+      EULA: 'https://dl.lenses.stream/d/?id=b96f331c-45be-4a1f-b802-8be0d41e05de'
+    networks:
+      shared_net:
+      default:
+    ports:
+      - 3050:3050
+      - 9092
+      - 2181
+      - 8081
+      - 9581
+      - 9582
+      - 9584
+      - 9585
+
+volumes:
+  postgres_data:
+
+networks:
+  shared_net:
+    driver: bridge
+  default:
+    driver: bridge

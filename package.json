@@ -1,0 +1,27 @@
+{
+  "name": "kafka-webhook-dispatcher",
+  "version": "1.0.0",
+  "description": "Recieve kafka messages and dispatch webhooks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonireilly/kafka-webhook-dispatcher.git"
+  },
+  "keywords": [
+    "kafka",
+    "webhook",
+    "nodejs"
+  ],
+  "author": "simonireilly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simonireilly/kafka-webhook-dispatcher/issues"
+  },
+  "homepage": "https://github.com/simonireilly/kafka-webhook-dispatcher#readme",
+  "dependencies": {
+    "kafka-node": "^4.1.3"
+  }
+}
