@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm start
+    environment:
+      KAFKA_HOST: kafka:9092
+
+networks:
+  shared_net:
+    driver: bridge
+  default:
+    driver: bridge

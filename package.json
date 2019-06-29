@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app/consumer.js",
+    "demo": "node app/consumer.js & node test/producer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

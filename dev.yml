@@ -1,15 +1,7 @@
 
 version: '3.5'
 
-
 services:
-  nodejs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: webhook_dispatcher
-    command: npm start
-
   postgres:
     image: postgres:11.2-alpine
     ports:
