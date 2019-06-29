@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/simonireilly/kafka-webhook-dispatcher#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "kafka-node": "^4.1.3"
   }
 }
