@@ -1,17 +1,11 @@
-FROM node:11.15.0-alpine
-
-RUN apk add --no-cache \
-  git \
-  autoconf \
-  automake \
-  bash \
-  g++ \
-  libc6-compat \
-  libjpeg-turbo-dev \
-  libpng-dev \
-  make \
-  nasm
-
-RUN yarn global add concurrently
+FROM node:11.15.0-alpine AS dev
 
 WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+CMD [ "npm", "start" ] AS prod

@@ -8,6 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: webhook_dispatcher
+    command: npm start
 
   postgres:
     image: postgres:11.2-alpine
@@ -30,13 +31,13 @@ services:
       default:
     ports:
       - 3050:3050
-      - 9092
-      - 2181
-      - 8081
-      - 9581
-      - 9582
-      - 9584
-      - 9585
+      - 9092:9092
+      - 2181:2181
+      - 8081:8081
+      - 9581:9581
+      - 9582:9582
+      - 9584:9584
+      - 9585:9585
 
 volumes:
   postgres_data:
