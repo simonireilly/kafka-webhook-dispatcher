@@ -6,8 +6,11 @@ services:
       context: .
       dockerfile: Dockerfile
     command: npm start
-    environment:
-      KAFKA_HOST: kafka:9092
+    env_file:
+      - .env
+    networks:
+      shared_net:
+      default:
 
 networks:
   shared_net:

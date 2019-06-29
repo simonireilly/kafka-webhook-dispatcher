@@ -1,49 +1,45 @@
-const kafka = require('kafka-node');
+const kafka = require('kafka-node')
 
-clientOptions = {
+const clientOptions = {
   kafkaHost: process.env.KAFKA_HOST
 }
 
-payloads = [{
-  topic: 'webhooks',
-  offset: 2, //default 0
-  partition: 0 // default 0
+const payloads = [{
+  topic: process.env.WEBHOOK_TOPIC_NAME,
+  offset: parseInt(process.env.WEBHOOK_TOPIC_OFFSET)
 }]
 
-consumerOptions = {
-  groupId: 'node-webhook-dispatcher',
-   autoCommit: false
+const consumerOptions = {
+  groupId: process.env.WEBHOOK_CONSUMER_GROUP
 }
 
-var topicsToCreate = [{
-  topic: 'webhooks',
-  partitions: 1,
-  replicationFactor: 1
+const topicsToCreate = [{
+  topic: process.env.WEBHOOK_TOPIC_NAME,
+  partitions: parseInt(process.env.WEBHOOK_TOPIC_PARTITION_COUNT),
+  replicationFactor: parseInt(process.env.WEBHOOK_TOPIC_REPLICATION_FACTOR)
 }]
 
 try {
   // Initialize the client and create the topics
-  const client = new kafka.KafkaClient(clientOptions);
+  const client = new kafka.KafkaClient(clientOptions)
   client.createTopics(topicsToCreate, (error, result) => {
-    console.log(result)
-  });
-
+    console.log('Creating topic error', error)
+    console.log('Creating topic result', result)
+  })
 
   // Log successful construction
-  const Consumer = kafka.Consumer;
-  const consumer = new Consumer(client, payloads, consumerOptions);
-  console.log("Consumer constructed =>", consumer.options)
+  const consumer = new kafka.Consumer(client, payloads, consumerOptions)
+  console.log('Consumer constructed =>', consumer.options)
 
   // Bind the on message event of the consumer
   consumer.on('message', async function (message) {
-    console.log('here');
-    console.log('kafka-> ', message.value);
+    console.log('webhook consumer message-> ', message.value)
   })
 
   // Bind the on error event of the consumer
   consumer.on('error', function (err) {
-    console.log('error', err);
-  });
+    console.log('webhook consumer error', err)
+  })
 } catch (e) {
-  console.log(e);
+  console.log(e)
 }

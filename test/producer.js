@@ -1,33 +1,36 @@
-var kafka = require('kafka-node'),
+// Libraries
+const kafka = require('kafka-node')
 
-clientOptions = {
+const clientOptions = {
   kafkaHost: process.env.KAFKA_HOST
 }
 
-payloads = [
+const payloads = [
   {
-    topic: 'webhooks',
+    topic: process.env.WEBHOOK_TOPIC_NAME,
     messages: 'hi I am producing',
-    partition: 0
+    partition: parseInt(process.env.WEBHOOK_TOPIC_PARTITION)
   }
-];
+]
 
-consumerOptions = {
-  groupId: 'node-webhook-dispatcher',
-  autoCommit: false
-}
+const client = new kafka.KafkaClient(clientOptions)
+const producer = new kafka.Producer(client)
 
-Producer = kafka.Producer
-KeyedMessage = kafka.KeyedMessage
-client = new kafka.KafkaClient(clientOptions)
-producer = new Producer(client)
-
-console.log("Preparing to produce...")
+console.log('------')
+console.log('Preparing to produce...\n')
 
 producer.on('ready', function () {
   producer.send(payloads, function (err, data) {
-    console.log(data);
-  });
-});
+    console.log('\tProducer Data', data)
+  })
+})
 
-producer.on('error', function (err) {})
+producer.on('error', function (err) {
+  console.log('\tProducer error', err)
+})
+
+console.log('\tExiting in 2 seconds')
+setTimeout(() => {
+  process.exit(0)
+}, 2000)
+console.log('------')

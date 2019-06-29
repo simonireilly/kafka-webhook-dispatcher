@@ -15,6 +15,17 @@ up: ## Start the application
 stop: ## Stop the application
 	docker-compose ${COMPOSE} stop
 
+down:
+	docker-compose $(COMPOSE) down
+
+restart: ## Restart all the containers
+	make stop
+	make up
+
 tail: ## Tail the application logs
 	docker-compose ${COMPOSE} logs --tail="100" -f
 
+produce: ## Produce some messages so that we can test
+	docker-compose -f dispatcher.yml exec nodejs node test/producer.js
+
+add-topic: ## Add a topic to the kafka broker

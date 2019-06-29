@@ -1,28 +1,30 @@
-'use strict';
+//  Libraries
+import express from 'express'
+import { json } from 'body-parser'
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express().use(bodyParser.json()); // creates http server
-const token = 'test'; // type here your verification token
+// Config
+const app = express().use(json()) // creates http server
+const token = 'test' // type here your verification token
 
+// Setup routes
 app.get('/', (req, res) => {
     // check if verification token is correct
     if (req.query.token !== token) {
-        return res.sendStatus(401);
+        return res.sendStatus(401)
     }
 
     // return challenge
-    return res.end(req.query.challenge);
-});
+    return res.end(req.query.challenge)
+})
 
 app.post('/', (req, res) => {
     // check if verification token is correct
     if (req.query.token !== token) {
-        return res.sendStatus(401);
+        return res.sendStatus(401)
     }
 
     // print request body
-    console.log(req.body);
+    console.log(req.body)
 
     // return a text response
     const data = {
@@ -32,9 +34,9 @@ app.post('/', (req, res) => {
                 elements: ['Hi', 'Hello']
             }
         ]
-    };
+    }
 
-    res.json(data);
-});
+    res.json(data)
+})
 
-app.listen(3000, () => console.log('[BotEngine] Webhook is listening'));
+app.listen(3000, () => console.log('[BotEngine] Webhook is listening'))

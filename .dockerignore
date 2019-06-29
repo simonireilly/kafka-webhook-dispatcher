@@ -1,4 +1,16 @@
+# External Dependencies
 node_modules
+
+# Static Files
 README.md
 package-lock.json
 .gitignore
+
+# Dev Tools
+Makefile
+dev.yml
+dispatcher.yml
+
+# Linters and Code Standardisers
+.eslintrc.json
+.vscode

@@ -14,15 +14,13 @@ services:
 
   kafka:
     image: landoop/kafka-lenses-dev
-    environment:
-      SAMPLEDATA: '0'
-      RUNNING_SAMPLEDATA: '0'
-      EULA: 'https://dl.lenses.stream/d/?id=b96f331c-45be-4a1f-b802-8be0d41e05de'
+    env_file:
+      - .env.dev
     networks:
       shared_net:
       default:
     ports:
-      - 3050:3050
+      - 3030:3030
       - 9092:9092
       - 2181:2181
       - 8081:8081
