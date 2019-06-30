@@ -5,7 +5,7 @@ const kafka = require('kafka-node')
 const config = require('../../app/config/consumer-config')
 
 // Setup - Constants
-const testTopicName = 'test-create-topic-produce-consume'
+const testTopicName = `test-create-topic-produce-consume-${Date.now()}`
 
 const topicsToCreate = [{
   topic: testTopicName,
@@ -22,17 +22,20 @@ const payloads = [{
 
 // Client setup
 const client = new kafka.KafkaClient(config.clientOptions)
-const consumer = new kafka.Consumer(client, [{ topic: testTopicName }], config.consumerOptions)
-const producer = new kafka.Producer(client)
 
 // Create the topic if it does not exist
 client.createTopics(topicsToCreate, (error, result) => {
   if(error !== null) {
     console.log('\nCreating topic error', error)
+    process.exit(1)
   } else {
     console.log('\nCreating topic result', result)
   }
 })
+
+// Consumer/Producer Setup
+const consumer = new kafka.Consumer(client, [{ topic: testTopicName }], config.consumerOptions)
+const producer = new kafka.Producer(client)
 
 // Produce a new message
 producer.on('ready', function () {
