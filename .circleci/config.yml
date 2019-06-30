@@ -3,7 +3,7 @@ jobs:
   integration:
     working_directory: ~/app
     docker:
-      - image: circleci/node:4.8.
+      - image: circleci/node:11.15.0
       - image: wurstmeister/kafka:2.11-0.11.0.3
         environment:
           KAFKA_ADVERTISED_HOST_NAME: localhost
