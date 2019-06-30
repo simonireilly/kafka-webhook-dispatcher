@@ -2,6 +2,7 @@ version: 2.1
 
 executors:
   web-app:
+    working_directory: ~/app
     docker:
       - image: circleci/node:11.15.0
         environment:
@@ -12,6 +13,26 @@ executors:
           WEBHOOK_TOPIC_PARTITION_COUNT: 1
           WEBHOOK_TOPIC_REPLICATION_FACTOR: 1
           WEBHOOK_CONSUMER_GROUP_ID: node-webhook-dispatcher
+  kafka-node:
+    working_directory: ~/app
+    docker:
+      - image: circleci/node:11.15.0
+        environment:
+          KAFKA_HOST: localhost:9092
+          WEBHOOK_TOPIC_NAME: webhooks
+          WEBHOOK_TOPIC_OFFSET: 0
+          WEBHOOK_TOPIC_PARTITION: 0
+          WEBHOOK_TOPIC_PARTITION_COUNT: 1
+          WEBHOOK_TOPIC_REPLICATION_FACTOR: 1
+          WEBHOOK_CONSUMER_GROUP_ID: node-webhook-dispatcher
+      - image: wurstmeister/zookeeper
+      - image: wurstmeister/kafka:2.11-0.11.0.3
+        environment:
+          KAFKA_ADVERTISED_HOST_NAME: localhost
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+          KAFKA_DELETE_TOPIC_ENABLE: true
 
 commands:
   prepare-node:
@@ -31,17 +52,7 @@ commands:
             - ./node_modules
 jobs:
   integration:
-    working_directory: ~/app
-    executor: web-app
-    docker:
-      - image: wurstmeister/zookeeper
-      - image: wurstmeister/kafka:2.11-0.11.0.3
-        environment:
-          KAFKA_ADVERTISED_HOST_NAME: localhost
-          KAFKA_ADVERTISED_PORT: 9092
-          KAFKA_PORT: 9092
-          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
-          KAFKA_DELETE_TOPIC_ENABLE: true
+    executor: node-only
     steps:
       - checkout
       - prepare-node
@@ -51,7 +62,7 @@ jobs:
 
   unit:
     working_directory: ~/app
-    executor: web-app
+    executor: kafka-node
     steps:
       - checkout
       - prepare-node
