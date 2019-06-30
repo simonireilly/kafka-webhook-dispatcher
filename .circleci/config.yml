@@ -53,7 +53,7 @@ commands:
 
 jobs:
   integration:
-    executor: node-only
+    executor: kafka-node
     steps:
       - checkout
       - prepare-node
@@ -63,7 +63,7 @@ jobs:
 
   unit:
     working_directory: ~/app
-    executor: kafka-node
+    executor: node-only
     steps:
       - checkout
       - prepare-node
