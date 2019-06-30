@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "test:integration": "node test/integration/create-topic-produce-consume.js"
   },
   "repository": {
@@ -35,9 +35,11 @@
     "eslint": "^6.0.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jest": "^22.7.1",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jest": "^24.8.0"
   }
 }

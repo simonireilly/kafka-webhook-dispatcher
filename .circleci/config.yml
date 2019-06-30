@@ -1,7 +1,7 @@
 version: 2
-jobs:
-  integration:
-    working_directory: ~/app
+
+executors:
+  nodejs:
     docker:
       - image: circleci/node:11.15.0
         environment:
@@ -12,16 +12,11 @@ jobs:
           WEBHOOK_TOPIC_PARTITION_COUNT: 1
           WEBHOOK_TOPIC_REPLICATION_FACTOR: 1
           WEBHOOK_CONSUMER_GROUP_ID: node-webhook-dispatcher
-      - image: wurstmeister/zookeeper
-      - image: wurstmeister/kafka:2.11-0.11.0.3
-        environment:
-          KAFKA_ADVERTISED_HOST_NAME: localhost
-          KAFKA_ADVERTISED_PORT: 9092
-          KAFKA_PORT: 9092
-          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
-          KAFKA_DELETE_TOPIC_ENABLE: true
+
+commands:
+  prepare-node:
+    description: "Install dependencies from cache for nodejs"
     steps:
-      - checkout
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
@@ -34,12 +29,40 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+jobs:
+  integration:
+    working_directory: ~/app
+    executor: nodejs
+    docker:
+      - image: wurstmeister/zookeeper
+      - image: wurstmeister/kafka:2.11-0.11.0.3
+        environment:
+          KAFKA_ADVERTISED_HOST_NAME: localhost
+          KAFKA_ADVERTISED_PORT: 9092
+          KAFKA_PORT: 9092
+          KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+          KAFKA_DELETE_TOPIC_ENABLE: true
+    steps:
+      - checkout
+      - prepare-node
       - run:
           name: test
           command: npm run test:integration
+
+  unit:
+    working_directory: ~/app
+    executor: nodejs
+    steps:
+      - checkout
+      - prepare-node
+      - run:
+          name: test
+          command: npm run test
+
 
 workflows:
   version: 2
   test:
     jobs:
+      - unit
       - integration
