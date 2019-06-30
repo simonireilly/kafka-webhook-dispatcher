@@ -1,7 +1,7 @@
 version: 2.1
 
 executors:
-  web-app:
+  node-only:
     working_directory: ~/app
     docker:
       - image: circleci/node:11.15.0
@@ -50,6 +50,7 @@ commands:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+
 jobs:
   integration:
     executor: node-only
@@ -69,7 +70,6 @@ jobs:
       - run:
           name: test
           command: npm run test
-
 
 workflows:
   version: 2
