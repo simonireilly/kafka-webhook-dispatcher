@@ -35,16 +35,16 @@ Kafka Benchmarking:
 - The Language should be performant
 - Language should support concurrency
 
-Language Go or Node are preferable.
+**Language Go or Node are preferable.**
 
 # Architecture
 
 ## Webhooks Received
 
-- single delivering topic enter the persist-and-validate consumer:
+- single receiving topic enter the persist-and-validate consumer:
     - This consumer persists all webhooks and validates them afterward.
     - Then if it is invalid it will not send it on to the next consumer.
-    - Valid uuids are passed onto the next topic
+    - Valid uuid's are passed onto the next topic
 
 ## Webhooks URL Monitor
 
