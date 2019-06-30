@@ -1,31 +1,40 @@
 #
 # This is a make file for running commands in this application
 #
-COMPOSE=-f dev.yml -f dispatcher.yml
+COMPOSE=docker-compose -f dev.yml -f dispatcher.yml
+COMPOSE_DISPACTH=docker-compose -f dispatcher.yml
 
-%-restart: ## Restart the app
-	docker-compose -f $*.yml stop
+init: ## Initialise the project
+	make build dev-up create-topics
 
 build: ## Build all required services
-	docker-compose ${COMPOSE} build
+	${COMPOSE} build
 
 up: ## Start the application
-	docker-compose ${COMPOSE} up --d
+	${COMPOSE} up --d
+
+%-up: ## Boot only the given compose
+	docker-compose -f $*.yml up --d
 
 stop: ## Stop the application
-	docker-compose ${COMPOSE} stop
+	${COMPOSE} stop
 
-down:
-	docker-compose $(COMPOSE) down
+down: ## Remoe all containers and volumes
+	$(COMPOSE) down
 
 restart: ## Restart all the containers
 	make stop
 	make up
 
 tail: ## Tail the application logs
-	docker-compose ${COMPOSE} logs --tail="100" -f
+	${COMPOSE} logs --tail="100" -f
 
 produce: ## Produce some messages so that we can test
-	docker-compose -f dispatcher.yml exec nodejs node test/producer.js
+	${COMPOSE_DISPACTH} run nodejs npm run produce
 
-add-topic: ## Add a topic to the kafka broker
+create-topics: ## Produce some messages so that we can test
+	${COMPOSE_DISPACTH} run nodejs npm run setup
+
+integration-test: ## Run the integration tests
+	make build dev-up
+	${COMPOSE_DISPACTH} run nodejs npm run test:integration

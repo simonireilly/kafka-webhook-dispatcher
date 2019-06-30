@@ -4,9 +4,9 @@
   "description": "Recieve kafka messages and dispatch webhooks",
   "main": "index.js",
   "scripts": {
-    "start": "node app/consumer.js",
-    "demo": "node app/consumer.js & node test/producer.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:integration": "node test/integration/create-topic-produce-consume.js"
   },
   "repository": {
     "type": "git",
