@@ -27,7 +27,7 @@ jobs:
             - ./node_modules
       - run:
           name: test
-          command: npm test:integration
+          command: npm run test:integration
 
 workflows:
   version: 2
