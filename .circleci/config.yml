@@ -4,6 +4,14 @@ jobs:
     working_directory: ~/app
     docker:
       - image: circleci/node:11.15.0
+        environment:
+          KAFKA_HOST: localhost:9092
+          WEBHOOK_TOPIC_NAME: webhooks
+          WEBHOOK_TOPIC_OFFSET: 0
+          WEBHOOK_TOPIC_PARTITION: 0
+          WEBHOOK_TOPIC_PARTITION_COUNT: 1
+          WEBHOOK_TOPIC_REPLICATION_FACTOR: 1
+          WEBHOOK_CONSUMER_GROUP_ID: node-webhook-dispatcher
       - image: wurstmeister/zookeeper
       - image: wurstmeister/kafka:2.11-0.11.0.3
         environment:
