@@ -1,5 +1,7 @@
 # Overview
 
+[![CircleCI](https://circleci.com/gh/simonireilly/kafka-webhook-dispatcher.svg?style=svg)](https://circleci.com/gh/simonireilly/kafka-webhook-dispatcher)
+
 This is an app for connecting to kafka and sending webhooks.
 
 - [Overview](#Overview)
@@ -15,7 +17,7 @@ This is an app for connecting to kafka and sending webhooks.
     - [Methodology](#Methodology)
       - [Unit Tests](#Unit-Tests)
       - [Integration Tests](#Integration-Tests)
-      
+          
 # Design Choices
 
 ## Language
