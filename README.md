@@ -1,10 +1,7 @@
-# Overview
-
 [![CircleCI](https://circleci.com/gh/simonireilly/kafka-webhook-dispatcher.svg?style=svg)](https://circleci.com/gh/simonireilly/kafka-webhook-dispatcher)
 
 This is an app for connecting to kafka and sending webhooks.
 
-- [Overview](#Overview)
 - [Design Choices](#Design-Choices)
   - [Language](#Language)
 - [Architecture](#Architecture)
@@ -17,7 +14,7 @@ This is an app for connecting to kafka and sending webhooks.
     - [Methodology](#Methodology)
       - [Unit Tests](#Unit-Tests)
       - [Integration Tests](#Integration-Tests)
-          
+
 # Design Choices
 
 ## Language
@@ -41,24 +38,26 @@ Kafka Benchmarking:
 
 # Architecture
 
+Document Architecture decisions using [ADR TOOLS](https://github.com/npryce/adr-tools)
+**If you cannot install the tools then use the provided template**
+
 ## Webhooks Received
 
 - single receiving topic enter the persist-and-validate consumer:
-    - This consumer persists all webhooks and validates them afterward.
-    - Then if it is invalid it will not send it on to the next consumer.
-    - Valid uuid's are passed onto the next topic
+  - This consumer persists all webhooks and validates them afterward.
+  - Then if it is invalid it will not send it on to the next consumer.
+  - Valid uuid's are passed onto the next topic
 
 ## Webhooks URL Monitor
 
 - Unique URL's should be persisted and monitored
-    - When a message arrived with a new URL this URL is added to the ENDPOINTS table
-    - This URL is monitored periodically for availability
+  - When a message arrived with a new URL this URL is added to the ENDPOINTS table
+  - This URL is monitored periodically for availability
 
 ## Webhooks Dispatcher
 
 - single delivering topic from the webhooks received consumer will be dispatched here:
-    - This consumer will poll the URL provided for the webhooks and send the webhooks on to the next stage
-    
+  - This consumer will poll the URL provided for the webhooks and send the webhooks on to the next stage
 
 # Developer
 
